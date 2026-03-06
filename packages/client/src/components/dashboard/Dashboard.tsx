@@ -5,19 +5,17 @@ import { ChatBox } from './ui/ChatBox';
 
 export function Dashboard() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen m-4">
+
       <Header />
-      <div className="flex flex-1 overflow-hidden">
-        {/* left side: canvas + players */}
-        <div className="flex flex-col w-2/3 h-full">
-          <div className="flex-1 border-b border-border">
-            <Canvas />
-          </div>
-          <div className="flex-1 h-1/3">
-            <Players />
-          </div>
+      <div className="flex h-full m-4 gap-1">
+        <div className="flex-1">
+          <Players />
         </div>
-        <div className="w-1/3 border-l border-border">
+        <div className="flex-1 border-b border-border">
+          <Canvas />
+        </div>
+        <div className="w-1/4 border-l border-border">
           <ChatBox />
         </div>
       </div>

@@ -1,13 +1,12 @@
 import { create } from 'zustand';
 
 export type Point = [number, number, number]; // [x, y, pressure]
-export type Line = Point[];
+export type Line = { points: Point[]; color: string };
 
 export interface DrawingState {
-
   //states
   lines: Line[];
-  currentLine: Line | null;
+  currentLine: Point[] | null;
   strokeColor: string;
 
   // Actions
@@ -18,7 +17,6 @@ export interface DrawingState {
   undo: () => void;
   clearCanvas: () => void;
 }
-
 
 export const useDrawingStore = create<DrawingState>((set) => ({
   lines: [],
@@ -39,7 +37,10 @@ export const useDrawingStore = create<DrawingState>((set) => ({
     set((state) => {
       if (!state.currentLine) return state;
       return {
-        lines: [...state.lines, state.currentLine],
+        lines: [
+          ...state.lines,
+          { points: state.currentLine, color: state.strokeColor },
+        ],
         currentLine: null,
       };
     }),

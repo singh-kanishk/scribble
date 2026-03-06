@@ -4,6 +4,8 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 import { useDrawingStore } from '@/store/useCanvasStore';
 import { StaticLayer } from '../utils/StaticLayer.tsx';
 import { ActiveLayer } from '../utils/ActiveLayer.tsx';
+import { ColorPallete } from './ColorPallette.tsx';
+
 
 export const Canvas = () => {
   const startLine = useDrawingStore((state) => state.startLine);
@@ -46,21 +48,29 @@ export const Canvas = () => {
   };
 
   return (
-    <Stage
-      width={700}
-      height={400}
-      style={{
-        border: '1px solid #060202',
-        backgroundColor: '#fafafa',
-        touchAction: 'none',
-      }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-    >
-      <StaticLayer />
-      <ActiveLayer />
-    </Stage>
+    <div className="flex flex-col gap-4 items-start">
+      <div>
+      {/* Canvas */}
+      <Stage
+        width={700}
+        height={400}
+        style={{
+          border: '1px solid #060202',
+          backgroundColor: '#fafafa',
+          touchAction: 'none',
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+      >
+        <StaticLayer />
+        <ActiveLayer />
+      </Stage>
+      </div>
+      <div>
+      <ColorPallete/>
+      </div>      
+    </div>
   );
 };
