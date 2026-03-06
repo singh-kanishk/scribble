@@ -7,7 +7,7 @@ export type {ApiResponse} from './types.ts'
 
 export const PORT ={
     server:3000,
-    db:5343
+    db:5342
 } as const
 
 

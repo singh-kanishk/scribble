@@ -72,3 +72,6 @@ packages/backend/drizzle/
 packages/backend/drizzle.config.ts
 packages/backend/drizzle/*.sql
 packages/backend/drizzle/meta/*
+
+.prettierrc
+.npmrc

@@ -1,6 +1,10 @@
 /// <reference types="node" />
-import 'dotenv/config';
+import path from 'path';
+import dotenv from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
+
+// load environment variables from the workspace root .env file
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 export default defineConfig({
   out: './drizzle',

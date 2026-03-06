@@ -4,4 +4,5 @@ export interface ApiResponse<T> {
   error?: string;
   message?:string;
   statusCode: number;
+  isSessionExpired?:boolean
 }

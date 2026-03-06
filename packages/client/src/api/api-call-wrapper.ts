@@ -1,6 +1,7 @@
 import { type ApiResponse } from '@my-app/shared';
 import { PORT } from '@my-app/shared';
-// 1. Added an internal _retry flag to prevent infinite refresh loops
+
+//Added an internal _retry flag to prevent infinite refresh loops
 interface ApiCallParams {
   url: string;
   config?: RequestInit;

@@ -63,6 +63,7 @@ res.cookie('accessToken', accessToken, {
 })
 authRouter.post('/login',async (req:Request,res:Response<ApiResponse<null>>)=>{
     try{
+        
         const body:LogInFormParams = req.body
         const userData = await getUsersPropertyFromUsername(body.username)
         

@@ -24,13 +24,15 @@ interface ErrorResponse {
   success: false;
   message: string;
   error?: unknown;
-  statusCode:number
+  statusCode:number;
+  isSessionExpired?:boolean
 }
 interface SendErrorParams{
   res: Response;
   message: string; 
   statusCode: number; 
   error?: unknown;
+  isSessionExpired?:boolean;
 }
 
 export const sendSuccess = <T>(
@@ -47,13 +49,14 @@ export const sendSuccess = <T>(
 };
 
 export const sendError = (
-  {res,message,statusCode,error}:SendErrorParams
+  {res,message,statusCode,error,isSessionExpired}:SendErrorParams
 ): void => {
   const response: ErrorResponse = {
     success: false,
     statusCode:statusCode,
     message,
-    ...(error !== undefined && { error })
+    ...(error !== undefined && { error }),
+    isSessionExpired:isSessionExpired
   };
 
   res.status(statusCode).json(response);
