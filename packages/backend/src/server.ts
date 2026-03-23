@@ -7,10 +7,13 @@ import { authRouter } from './routes/auth/authRoutes.ts';
 import { apiRouter } from './routes/apiRoutes.ts';
 import cookieParser from 'cookie-parser';
 import { PORT } from '@my-app/shared';
+import { Server } from 'socket.io';
+import http from 'http';
 
 const connectionString = process.env.DATABASE_URL as string;
 const client = postgres(connectionString, { prepare: false }); 
 export const db = drizzle(client,{schema});
+
 
 
 const app:Application = express();
@@ -21,7 +24,14 @@ const allowedOrigins = [
   `http://localhost:${backendPort}`, 
   `http://localhost:${dbPort}`
 ];
+const httpServer = http.createServer(app);
 
+export const io = new Server(httpServer, {
+  cors: {
+    origin:'http://localhost:5173',
+    methods:['GET','POST']
+  }
+})
 
 app.use(express.json())
 app.use(cookieParser())

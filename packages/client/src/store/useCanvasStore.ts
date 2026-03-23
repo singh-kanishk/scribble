@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export type Point = [number, number, number]; // [x, y, pressure]
-export type Line = { points: Point[]; color: string };
+export type Line = { points: Point[], color: string };
 
 export interface DrawingState {
   //states

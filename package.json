@@ -5,13 +5,14 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "concurrently \"pnpm -F @my-app/backend dev\" \"pnpm -F client dev\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "turbo": "^2.8.9"
   }
 }

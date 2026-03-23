@@ -3,6 +3,7 @@ import { getStroke } from 'perfect-freehand';
 import { useDrawingStore } from '@/store/useCanvasStore';
 import { getSvgPathFromStroke } from '@/utils/svgPathFromStroke';
 
+
 export const StaticLayer = () => {
   const lines = useDrawingStore((state) => state.lines);
 

@@ -1,7 +1,7 @@
-import { Header } from './ui/Header';
-import { Canvas } from './ui/Canvas';
-import { Players } from './ui/Players';
-import { ChatBox } from './ui/ChatBox';
+import { Header } from './ui/Header/Header';
+import { Canvas } from './ui/Canvas/Canvas';
+import { Players } from './ui/Players/Players';
+import { ChatBox } from './ui/ChatBox/ChatBox';
 
 export function Dashboard() {
   return (
