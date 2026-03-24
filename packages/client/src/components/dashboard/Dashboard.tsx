@@ -3,6 +3,7 @@ import { Canvas } from './ui/Canvas/Canvas';
 import { Players } from './ui/Players/Players';
 import { ChatBox } from './ui/ChatBox/ChatBox';
 
+
 export function Dashboard() {
   return (
     <div className="flex flex-col h-screen m-4">

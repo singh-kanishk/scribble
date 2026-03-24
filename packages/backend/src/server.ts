@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import { PORT } from '@my-app/shared';
 import { Server } from 'socket.io';
 import http from 'http';
+import { setupLobbies } from './routes/socketIO/lobbies.ts';
 
 const connectionString = process.env.DATABASE_URL as string;
 const client = postgres(connectionString, { prepare: false }); 
@@ -28,7 +29,7 @@ const httpServer = http.createServer(app);
 
 export const io = new Server(httpServer, {
   cors: {
-    origin:'http://localhost:5173',
+    origin:allowedOrigins,
     methods:['GET','POST']
   }
 })
@@ -55,6 +56,8 @@ app.use(
 app.use('/auth',authRouter)
 app.use('/api',apiRouter)
 
-app.listen(backendPort, () => {
+httpServer.listen(backendPort, () => {
   console.log(`Backend server running on http://localhost:${backendPort}`);
 });
+
+setupLobbies(io);

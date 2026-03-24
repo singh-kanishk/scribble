@@ -1,0 +1,6 @@
+﻿../shared/src/index.ts(8,32): error TS6059: File 'D:/Code/scribble/packages/shared/src/types.ts' is not under 'rootDir' 'D:/Code/scribble/packages/backend/src'. 'rootDir' is expected to contain all source files.
+  The file is in the program because:
+    Imported via './types.ts' from file 'D:/Code/scribble/packages/shared/src/index.ts'
+    Imported via './types.ts' from file 'D:/Code/scribble/packages/shared/src/index.ts'
+    Imported via "../../../../shared/src/types.ts" from file 'D:/Code/scribble/packages/backend/src/routes/socketIO/lobbies.ts'
+  File is ECMAScript module because 'D:/Code/scribble/packages/shared/package.json' has field "type" with value "module"

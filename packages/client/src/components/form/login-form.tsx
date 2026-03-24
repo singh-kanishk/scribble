@@ -21,9 +21,12 @@ import {type LogInFormParams,LogInSchema} from '@my-app/shared'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "@tanstack/react-router"
 import { submitLoginForm } from "@/api/queries"
+import { useUserDataStore } from "@/store/useUserDataStore"
 
 export function LogInForm(){
     
+    const setUserName = useUserDataStore((state) => state.setUserName) 
+    const setUserId = useUserDataStore((state) => state.setUserId) 
     const methods= useForm<LogInFormParams>({
         resolver:zodResolver(LogInSchema),defaultValues:{
             username:"",
@@ -36,8 +39,15 @@ export function LogInForm(){
     async function onSubmit(data: LogInFormParams) {
       const response= await submitLoginForm(data)
       if(!response.success){
-        alert(`Submission Faied : ${response.error||response.message}`)
-      }        
+        alert(`Submission Failed : ${response.error||response.message}`)
+      } else {
+        if(response.body) {
+          setUserName(response.body.username)
+          setUserId(response.body.userId)
+          console.log("Store username:", useUserDataStore.getState().username)
+          console.log("Store userid:", useUserDataStore.getState().userId)
+        }
+      }  
   }
 
     return (

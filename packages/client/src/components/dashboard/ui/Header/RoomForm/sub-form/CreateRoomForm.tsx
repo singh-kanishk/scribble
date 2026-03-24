@@ -16,19 +16,50 @@
  import { Input } from "@/components/ui/input"
  import { Button } from "@/components/ui/button"
  import { useForm} from 'react-hook-form'
+ import { useState, useEffect } from 'react'
 import { DrawerClose } from "@/components/ui/drawer"
-
-interface CreateRoom{
-    roomId:string,
-    passcode:string
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import  {roomFormSchema,type roomFormValues,type Lobby } from "@my-app/shared"
+import { socket } from "@/utils/socket-setup"
+import { useUserDataStore } from "@/store/useUserDataStore"
+import { useLobbyStore } from "@/store/useLobbyStore"
 
 export function CreateRoomForm(){
+    const username  = useUserDataStore((state)=>(state.username))||'No Username'
+    const setCurrentLobby = useUserDataStore((state) => state.setCurrentLobby)
+    const setLobby = useLobbyStore((state) => state.setLobby)
+    const [socketError, setSocketError] = useState<string | null>(null)
 
-    const methods = useForm<CreateRoom>();
-
-    function onSubmit(){
+    useEffect(() => {
+      function handleError(err: { message: string }) {
+        setSocketError(err.message)
+      }
       
+      function handleSuccess(lobby: Lobby) {
+        setCurrentLobby(lobby.roomId)
+        setLobby(lobby)
+        document.getElementById('drawer-close-create')?.click()
+      }
+      
+      socket.on('error', handleError)
+      socket.on('lobby_created', handleSuccess)
+      return () => {
+        socket.off('error', handleError)
+        socket.off('lobby_created', handleSuccess)
+      }
+    }, [setCurrentLobby, setLobby])
+
+    const methods = useForm<roomFormValues>({
+      resolver: zodResolver(roomFormSchema),
+    defaultValues: {
+      roomId: "",
+      passcode: "",
+    },
+    });
+
+    function onSubmit(data:roomFormValues){
+       setSocketError(null)
+       socket.emit('create_lobby', { ...data, username })
     }
 
     
@@ -74,10 +105,15 @@ export function CreateRoomForm(){
             </FormItem>
           )}
         />
+         {socketError && (
+           <div className="text-red-500 text-sm font-semibold mb-2 text-center pb-2">
+             {socketError}
+           </div>
+         )}
          <div className="flex flex-col gap-1">
         <Button name="submit" type="submit" className="hover:bg-gray-500">Create</Button>
         <DrawerClose asChild>
-        <Button name="cancel" type="reset" className="bg-white text-black hover:bg-amber-100">Cancel</Button>
+        <Button id="drawer-close-create" name="cancel" type="reset" className="bg-white text-black hover:bg-amber-100">Cancel</Button>
         </DrawerClose>
         </div>
         </FieldGroup>

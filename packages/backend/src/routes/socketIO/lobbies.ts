@@ -1,16 +1,21 @@
-import { io } from "../../server.ts";
-import { Socket } from "socket.io";
+import { Socket, Server } from "socket.io";
 
 import type { Lobby,User } from "../../../../shared/src/types.ts"; 
 
 
 const lobbies = new Map<string, Lobby>();
 
-io.on('connection', (socket: Socket) => {
+export function setupLobbies(io: Server) {
+  io.on('connection', (socket: Socket) => {
 
   // 1. CREATE A LOBBY
-  socket.on('create_lobby', (data: { roomId: string , passcode:string ,username:string }) => {
-    const { passcode, roomId ,username} = data;
+  socket.on('create_lobby', (data: { roomId?: string , passcode?:string ,username?:string }) => {
+    const { passcode, roomId ,username} = data || {};
+    
+    if (!roomId || !passcode || !username) {
+      socket.emit('error', { message: 'Missing required fields' });
+      return;
+    }
 
     if (lobbies.has(roomId)) {
       socket.emit('error', { message: 'Room already exists' });
@@ -35,12 +40,23 @@ io.on('connection', (socket: Socket) => {
   });
 
   // 2. JOIN A LOBBY
-  socket.on('join_lobby', (data: { username: string, roomId: string }) => {
-    const { username, roomId } = data;
+  socket.on('join_lobby', (data: { username?: string, roomId?: string, passcode?: string }) => {
+    const { username, roomId , passcode} = data || {};
+
+    if (!roomId || !passcode || !username) {
+      socket.emit('error', { message: 'Missing required fields' });
+      return;
+    }
+
     const lobby = lobbies.get(roomId);
 
     if (!lobby) {
       socket.emit('error', { message: 'Lobby not found' });
+      return;
+    }
+
+    if (lobby.passcode !== passcode) {
+      socket.emit('error', { message: 'Incorrect passcode' });
       return;
     }
 
@@ -91,5 +107,6 @@ io.on('connection', (socket: Socket) => {
       }
     });
   });
-});
+  });
+}
 

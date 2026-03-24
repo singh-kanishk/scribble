@@ -3,8 +3,13 @@ import { apiCall } from "./api-call-wrapper";
 import { getUrlForApiCall } from "@/utils/api-related-func";
 
 
+export interface AuthResponseData {
+    userId: string;
+    username: string;
+}
+
 export async function submitSignUpForm(data:SignUpFormParams){
-    const response =await apiCall<null>({
+    const response =await apiCall<AuthResponseData>({
     url:getUrlForApiCall('/auth/signup') ,
     method:'POST' ,
     config:{        
@@ -21,7 +26,7 @@ export async function submitSignUpForm(data:SignUpFormParams){
 }
 
 export async function submitLoginForm(data:LogInFormParams) {
-    const response =await apiCall<null>({
+    const response =await apiCall<AuthResponseData>({
     url:getUrlForApiCall('/auth/login') ,
     method:'POST' ,
     config:{        

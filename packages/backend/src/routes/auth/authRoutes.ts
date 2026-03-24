@@ -22,6 +22,15 @@ const cookieOptions = {
 
 authRouter.get('/refresh',refreshSession)
 
+interface LoginReturnInterface{
+    userId:string;
+    username:string;
+}
+interface SignUpReturnInterface{
+    userId:string;
+    username:string;
+}
+
 authRouter.post('/signup',async (req:Request,res:Response<ApiResponse<null>>)=>{
     try{
         const body:SignUpFormParams= req.body
@@ -54,7 +63,7 @@ res.cookie('accessToken', accessToken, {
     {...cookieOptions,
         maxAge:7*24*60*60*1000 // 7 day
     })
-        return sendSuccess<null>( { res:res , message:'Successfully Signed Up' , statusCode:200 , data:null} )
+        return sendSuccess<SignUpReturnInterface>( { res:res , message:'Successfully Signed Up' , statusCode:200 , data:{userId:insertedId, username:body.username}} )
     }
     catch(error){
        const errorMessage = error instanceof Error ? error.message : 'Unknown Error';
@@ -88,7 +97,7 @@ authRouter.post('/login',async (req:Request,res:Response<ApiResponse<null>>)=>{
         maxAge:7*24*60*60*1000 // 7 day
     })
 
-    return sendSuccess<null>( { res:res , message:'Successfully Logged In' , statusCode:200 , data:null} )
+    return sendSuccess<LoginReturnInterface>( { res:res , message:'Successfully Logged In' , statusCode:200 , data:{userId:userData.id||' ', username:body.username}} )
     }
     catch(error){
         const errorMessage = error instanceof Error ? error.message : 'Unknown Error';
